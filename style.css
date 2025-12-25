@@ -1,4 +1,4 @@
-/* === GLOBAL === */
+/* === GLOBAL STIL === */
 body {
     margin:0;
     font-family:'Poppins',sans-serif;
@@ -40,6 +40,13 @@ nav a {
 nav a:hover {
     color:white;
     text-shadow:0 0 10px #fff;
+}
+.user-avatar {
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    margin-left:15px;
+    vertical-align:middle;
 }
 
 /* === HERO === */
@@ -217,77 +224,58 @@ h2 {
 .status-card h3 {font-size:36px;margin:0;}
 
 /* === FORUM / CHAT === */
-.forum-grid {
-    display:grid;
-    grid-template-columns:1fr 3fr;
-    gap:20px;
-}
+.forum-container {display:flex;gap:25px;flex-wrap:wrap;}
 .forum-sidebar {
     background:#15171C;
     padding:25px;
     border-radius:12px;
+    flex:1 1 200px;
+    min-width:180px;
 }
-.forum-sidebar h3 {margin-top:0;}
-.forum-topic {
-    background:#15171C;
-    padding:20px;
-    margin-bottom:15px;
-    border-radius:12px;
-    box-shadow:0 0 10px #0005;
+.forum-sidebar input {
+    width:100%;padding:8px;margin:10px 0;border-radius:6px;border:1px solid #3D4049;background:#1a1b20;color:white;
 }
-.forum-topic h4 {margin:0 0 5px;}
-.forum-topic p {font-size:14px;opacity:.85;}
-.forum-topic .user {
-    display:flex;
-    align-items:center;
-    margin-top:8px;
-}
-.forum-topic .user img {
-    width:32px;
-    height:32px;
-    border-radius:50%;
-    margin-right:10px;
-}
-.chat-box {
+.forum-sidebar ul{list-style:none;padding:0;}
+.forum-sidebar ul li{padding:8px 0;cursor:pointer;transition:.3s;}
+.forum-sidebar ul li:hover{color:white;}
+#login-btn{margin-top:15px;padding:10px;width:100%;background:#7289da;border:none;border-radius:6px;color:white;cursor:pointer;}
+
+.forum-main{flex:3 1 600px;}
+.forum-topic{background:#15171C;padding:20px;margin-bottom:15px;border-radius:12px;box-shadow:0 0 10px #0005;}
+.forum-topic h4{margin:0 0 5px;}
+.forum-topic p{font-size:14px;opacity:.85;}
+.forum-topic .user{display:flex;align-items:center;margin-top:8px;}
+.forum-topic .user img{width:32px;height:32px;border-radius:50%;margin-right:10px;}
+
+.chat-box{
     background:#15171C;
     padding:15px;
     border-radius:12px;
-    max-height:400px;
+    max-height:300px;
     overflow-y:auto;
     margin-top:15px;
+    font-size:14px;
 }
-.chat-input {
-    width:100%;
-    padding:10px;
-    border-radius:8px;
-    border:1px solid #3D4049;
-    margin-top:10px;
-    background:#1a1b20;
-    color:white;
-}
+.chat-msg{margin-bottom:6px;}
+.chat-input{width:100%;padding:10px;border-radius:8px;border:1px solid #3D4049;margin-top:10px;background:#1a1b20;color:white;}
+
+.forum-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin-top:25px;}
+.forum-card{background:#15171C;padding:20px;border-radius:12px;box-shadow:0 0 12px #0005;}
+.forum-card h4{margin:0 0 8px;}
+.forum-card p{font-size:14px;opacity:.85;}
+.forum-card .user{display:flex;align-items:center;margin-top:10px;}
+.forum-card .user img{width:28px;height:28px;border-radius:50%;margin-right:8px;}
 
 /* === REVEAL ANIMATION === */
-.reveal {
-    opacity:0;
-    transform:translateY(60px);
-    transition:1s;
-}
-.reveal.active {
-    opacity:1;
-    transform:translateY(0);
-}
+.reveal {opacity:0;transform:translateY(60px);transition:1s;}
+.reveal.active {opacity:1;transform:translateY(0);}
 
 /* === FOOTER === */
-footer {
-    text-align:center;
-    color:#777;
-    padding:40px;
-    margin-top:80px;
-}
+footer {text-align:center;color:#777;padding:40px;margin-top:80px;}
 
 /* === RESPONSIVE === */
 @media(max-width:768px){
-    .features, .kom-igang-grid, .status-grid, .forum-grid {
+    .features, .kom-igang-grid, .status-grid, .forum-container, .forum-cards {
         grid-template-columns:1fr;
     }
 }
