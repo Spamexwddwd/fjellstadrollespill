@@ -9,42 +9,62 @@
 </head>
 <body>
 
+<canvas id="particles"></canvas>
+
 <nav>
   <a href="index.html">Hjem</a>
   <a href="forum.html">Forum</a>
+  <span id="user-profile"></span>
 </nav>
 
 <section id="forum">
-<h2>Forum / Community</h2>
+<h2>Fjellstad RP Forum</h2>
 
-<div class="forum-grid">
-  <div class="forum-sidebar">
+<div class="forum-container">
+
+  <!-- SIDEBAR -->
+  <aside class="forum-sidebar">
     <h3>Kategorier</h3>
-    <ul>
-      <li>Generell</li>
-      <li>Forslag</li>
-      <li>RP Diskusjon</li>
-      <li>Staff</li>
+    <input type="text" id="search" placeholder="Søk topic...">
+    <ul id="category-list">
+      <li data-cat="all">Alle</li>
+      <li data-cat="general">Generell</li>
+      <li data-cat="suggestion">Forslag</li>
+      <li data-cat="rp">RP Diskusjon</li>
+      <li data-cat="staff">Staff</li>
     </ul>
-  </div>
-  <div>
-    <div class="forum-topic">
-      <h4>Velkommen til Fjellstad RP!</h4>
-      <p>Her kan alle diskutere og poste forslag.</p>
-      <div class="user"><img src="assets/avatars/avatar1.png" alt="avatar"> <span>Admin</span></div>
-    </div>
-    <div class="forum-topic">
-      <h4>Forslag: Nye jobber</h4>
-      <p>Jeg foreslår en ny politirolle med spesialutstyr.</p>
-      <div class="user"><img src="assets/avatars/avatar2.png" alt="avatar"> <span>Spiller1</span></div>
-    </div>
+    <button id="login-btn"><i class="fa-brands fa-discord"></i> Logg inn med Discord</button>
+  </aside>
 
+  <!-- MAIN FORUM -->
+  <div class="forum-main">
+
+    <div id="topics"></div>
+
+    <!-- CHAT -->
     <div class="chat-box" id="chat-box"></div>
     <input type="text" class="chat-input" id="chat-input" placeholder="Skriv melding og trykk enter">
+
+    <!-- Forslag & Rapportkort -->
+    <div class="forum-cards">
+      <div class="forum-card">
+        <h4>Forslag: Nye biler</h4>
+        <p>Legg til sportsbiler for RP</p>
+        <div class="user"><img src="assets/avatars/avatar2.png"> <span>Spiller2</span></div>
+      </div>
+      <div class="forum-card">
+        <h4>Spillerrapport: R9</h4>
+        <p>Rapportert for powergaming</p>
+        <div class="user"><img src="assets/avatars/avatar3.png"> <span>Staff1</span></div>
+      </div>
+    </div>
+
   </div>
+
 </div>
 </section>
 
+<script src="forum.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
