@@ -602,7 +602,7 @@
                     <div class="hero-stats">
                         <div class="stat-item">
                             <span class="stat-number" id="playersOnline">0</span>
-                            <span class="stat-label">Spillere Online</span>
+                            <span class="stat-label">Aktive Spillere</span>
                         </div>
                         <div class="stat-item">
                             <span class="stat-number">64</span>
@@ -861,7 +861,7 @@
         let currentPlayerCount = 0;
         async function fetchPlayerCount() {
         try {
-        const response = await fetch('https://servers-frontend.fivem.net/api/servers/single/p7eg77');
+        const response = await fetch('https://servers-frontend.fivem.net/api/servers/single/eppe33');
         const data = await response.json();
         console.log('API Response:', data); // Debug log
         if (data && data.Data && typeof data.Data.clients === 'number') {
