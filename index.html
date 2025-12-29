@@ -313,7 +313,7 @@ Fjellstad Rollespill
     </section>
     <footer id="kontakt">
         <div class="container">
-            <div class="fjordhost-credit">
+            <div class="Fjellstad-credit">
                 <h4>🌊 Nettsiden drives av <a href="index.html" target="_blank" rel="noopener noreferrer"
                         style="color: inherit; text-decoration: underline;">FjellstadRP</a></h4>
                 <p style="color: var(--text-secondary); margin-bottom: 1rem;">
@@ -562,7 +562,7 @@ Fjellstad Rollespill
         document.addEventListener('DOMContentLoaded',()=>{
         const loadingScreen=document.createElement('div');
         loadingScreen.classList.add('loading-screen');
-        loadingScreen.innerHTML=`<div class="loading-logo"><img src="logo.png" class="loading-logo-img" /></div><div class="loading-bar"><div class="loading-progress" id="loadingProgress"></div></div><div class="fjordhost-loading">Laster... <a href="https://fjordhost.com/">Fjordhost</a></div>`;
+        loadingScreen.innerHTML=`<div class="loading-logo"><img src="logo.png" class="loading-logo-img" /></div><div class="loading-bar"><div class="loading-progress" id="loadingProgress"></div></div><div class="Fjellstad-loading">Laster... <a href="</a></div>`;
         document.body.appendChild(loadingScreen);
         let progress=0;
         const interval=setInterval(()=>{progress+=1;document.getElementById('loadingProgress').style.width=progress+'%';if(progress>=100){clearInterval(interval);loadingScreen.style.opacity='0';setTimeout(()=>loadingScreen.remove(),500);}},30);
