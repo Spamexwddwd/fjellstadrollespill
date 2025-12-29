@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Kalender - Fjellstad Rollespill</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
 body{
@@ -11,15 +11,21 @@ body{
 }
 
 /* Header */
-header{position:fixed;top:0;width:100%;background:#0a0e1acc;padding:15px 0;border-bottom:1px solid #ffffff22;backdrop-filter:blur(10px);}
+header{
+    position:fixed;top:0;width:100%;background:#0a0e1acc;
+    padding:15px 0;border-bottom:1px solid #ffffff22;backdrop-filter:blur(10px);
+}
 nav{max-width:1000px;margin:auto;display:flex;justify-content:space-between;align-items:center;padding:0 15px;}
-nav ul{display:flex;gap:1.5rem;list-style:none;} nav a{color:#ddd;text-decoration:none;} nav a:hover{color:white;}
+nav ul{display:flex;gap:1.5rem;list-style:none;}nav a{color:#ddd;text-decoration:none;}nav a:hover{color:white;}
 
 .container{max-width:900px;margin:120px auto;text-align:center;}
 h1{font-size:2.8rem;margin-bottom:20px;background:linear-gradient(90deg,#7b45d0,#6e7dfb);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 
 .monthbar{display:flex;justify-content:center;align-items:center;gap:20px;margin-bottom:15px;font-size:1.6rem;font-weight:700;}
-.btn{background:#ffffff17;border:1px solid #ffffff40;padding:6px 12px;border-radius:6px;cursor:pointer;transition:.2s;}
+.btn{
+    background:#ffffff17;border:1px solid #ffffff40;padding:6px 12px;
+    border-radius:6px;cursor:pointer;transition:.2s;
+}
 .btn:hover{background:white;color:black;}
 
 /* Kalender grid */
@@ -29,34 +35,48 @@ h1{font-size:2.8rem;margin-bottom:20px;background:linear-gradient(90deg,#7b45d0,
     gap:6px;
     margin-top:15px;
 }
-.day-name{padding:8px;font-weight:700;opacity:.85;}
+.day-name{padding:8px;font-weight:700;opacity:.85;text-align:center;}
 
 .day{
-    height:90px;padding:7px;border-radius:10px;
-    background:#ffffff0e;border:1px solid #ffffff22;
-    text-align:left;position:relative;cursor:pointer;transition:.15s;
+    height:95px;padding:7px;border-radius:10px;background:#ffffff0e;border:1px solid #ffffff22;
+    text-align:left;position:relative;cursor:pointer;transition:.15s;display:flex;flex-direction:column;
 }
 .day:hover{background:#ffffff22;transform:scale(1.035);}
 .today{border:2px solid #81d5ff;}
 .empty{opacity:0;pointer-events:none;}
 
-.event-dot{
-    width:10px;height:10px;border-radius:999px;background:#81d5ff;
-    position:absolute;bottom:6px;right:6px;
+.event-label{
+    font-size:0.70rem;
+    margin-top:auto;
+    background:#81d5ff22;
+    border:1px solid #81d5ff55;
+    padding:2px 3px;
+    border-radius:4px;
+    width:max-content;
+    max-width:100%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
 }
 
 /* popup */
-#modal{display:none;position:fixed;inset:0;background:#0008;justify-content:center;align-items:center;}
-.modal-box{background:#111a2c;padding:22px;border-radius:12px;width:280px;text-align:center;}
+#modal{
+    display:none;position:fixed;inset:0;background:#0008;
+    justify-content:center;align-items:center;z-index:10;
+}
+.modal-box{
+    background:#111a2c;padding:22px;border-radius:12px;width:280px;text-align:center;
+}
 .modal-box button{margin-top:10px;}
 </style>
 </head>
 
 <body>
+
 <header>
 <nav>
     <div style="font-size:1.4rem;font-weight:800;">📅 Kalender</div>
-    <ul><li><a href="#">Hjem</a></li><li><a style="color:white">Kalender</a></li></ul>
+    <ul><li><a href="#">Hjem</a></li><li><a style="color:white;">Kalender</a></li></ul>
 </nav>
 </header>
 
@@ -70,7 +90,6 @@ h1{font-size:2.8rem;margin-bottom:20px;background:linear-gradient(90deg,#7b45d0,
     <div class="btn" onclick="nextMonth()">➡</div>
 </div>
 
-<!-- GRID inneholder både dag-navn og datoer -->
 <div class="calendar" id="calendar-grid">
     <div class="day-name">Man</div>
     <div class="day-name">Tir</div>
@@ -93,9 +112,11 @@ h1{font-size:2.8rem;margin-bottom:20px;background:linear-gradient(90deg,#7b45d0,
 </div>
 
 <script>
-// EVENT LISTE
+// EVENT LISTE — legg inn så mange du vil
 let events=[
-    { dato:"2025-12-01", tittel:"TEST 🎉", tekst:"Offisiell åpning!" },
+    { dato:"2025-02-01", tittel:"Åpningsfest 🎉", tekst:"Offisiell åpning og lansering" },
+    { dato:"2025-02-10", tittel:"Heist Event 💰", tekst:"Gjenger konkurrerer om heist" },
+    { dato:"2025-02-15", tittel:"Biltreff 🚗", tekst:"Vis frem bilen din og vinn premie" },
 ];
 
 let date=new Date();
@@ -110,12 +131,11 @@ function loadCalendar(){
     const lastDay=new Date(year,month+1,0).getDate();
 
     const grid=document.getElementById("calendar-grid");
-    grid.innerHTML = `
+    grid.innerHTML=`
         <div class="day-name">Man</div><div class="day-name">Tir</div><div class="day-name">Ons</div>
-        <div class="day-name">Tor</div><div class="day-name">Fre</div><div class="day-name">Lør</div><div class="day-name">Søn</div>
-    `;
+        <div class="day-name">Tor</div><div class="day-name">Fre</div><div class="day-name">Lør</div><div class="day-name">Søn</div>`;
 
-    for(let i=0;i<firstDay;i++) grid.innerHTML+=`<div class='day empty'></div>`;
+    for(let i=0;i<firstDay;i++) grid.innerHTML+=`<div class="day empty"></div>`;
 
     for(let i=1;i<=lastDay;i++){
         const d=`${year}-${String(month+1).padStart(2,"0")}-${String(i).padStart(2,"0")}`;
@@ -125,10 +145,10 @@ function loadCalendar(){
         const mark=(i===today.getDate()&&month===today.getMonth()&&year===today.getFullYear())?"today":"";
 
         grid.innerHTML+=`
-            <div class="day ${mark}" onclick="${e?`showEvent('${e.tittel}','${e.tekst}')`:""}">
-                ${i}
-                ${e?`<div class='event-dot'></div>`:""}
-            </div>`;
+        <div class="day ${mark}" onclick="${e?`showEvent('${e.tittel}','${e.tekst}')`:""}">
+            <div style="font-weight:700;font-size:1rem">${i}</div>
+            ${e?`<div class='event-label'>${e.tittel}</div>`:""}
+        </div>`;
     }
 }
 
@@ -136,11 +156,11 @@ function prevMonth(){date.setMonth(date.getMonth()-1);loadCalendar();}
 function nextMonth(){date.setMonth(date.getMonth()+1);loadCalendar();}
 
 function showEvent(t,x){
-    modal.style.display="flex";
-    eventTitle.innerText=t;
-    eventText.innerText=x;
+    document.getElementById("eventTitle").innerText=t;
+    document.getElementById("eventText").innerText=x;
+    document.getElementById("modal").style.display="flex";
 }
-function closeModal(){modal.style.display="none";}
+function closeModal(){document.getElementById("modal").style.display="none";}
 
 loadCalendar();
 </script>
