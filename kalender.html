@@ -1,1 +1,70 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<title>Kalender - Fjellstad Rollespill</title>
+<link rel="icon" type="image/x-icon" href="logo.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<style>
+    body{font-family:Inter, sans-serif;background:#0a0e1a;color:white;margin:0;}
+    header{position:fixed;top:0;width:100%;background:rgba(10,14,26,.8);backdrop-filter:blur(20px);padding:1rem;border-bottom:1px solid rgba(255,255,255,.1);}
+    nav{max-width:1200px;margin:auto;display:flex;justify-content:space-between;align-items:center;}
+    ul{list-style:none;display:flex;gap:2rem;margin-right:2rem;}
+    a{text-decoration:none;color:#ccc;font-weight:500;} a:hover{color:white;}
+
+    .container{max-width:1000px;margin:120px auto;padding:20px;}
+    h1{text-align:center;font-size:3rem;margin-bottom:2rem;background:linear-gradient(90deg,#6e7dfb,#7b45d0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    
+    .event{background:rgba(255,255,255,0.06);padding:20px;border-radius:12px;margin-bottom:15px;border:1px solid rgba(255,255,255,.1);transition:.2s;}
+    .event:hover{background:rgba(255,255,255,0.12);transform:translateY(-3px);}
+    .date{font-size:1.2rem;font-weight:700;color:#7bc9ff;}
+    .title{font-size:1.5rem;margin-top:5px;}
+    .desc{color:#ddd;margin-top:6px;}
+
+    .back{display:block;text-align:center;margin-top:40px;color:#7bc9ff;font-weight:700;font-size:1.2rem;}
+</style>
+</head>
+
+<body>
+<header>
+    <nav>
+        <div style="font-weight:800;font-size:1.3rem;">📅 Fjellstad Kalender</div>
+        <ul>
+            <li><a href="index.html">Hjem</a></li>
+            <li><a href="kalender.html" style="color:white;">Kalender</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container">
+    <h1>Arrangement Kalender</h1>
+    <div id="eventList"></div>
+
+    <a href="index.html" class="back">← Tilbake til forsiden</a>
+</div>
+
+<script>
+// ============ 🔥 Her legger du inn eventene dine ============
+let events = [
+    { dato: "2025-02-01", tittel: "Åpningsfest", tekst: "Serveren åpner offisielt! 🎉" },
+    { dato: "2025-02-05", tittel: "Biltreff", tekst: "Samling på flyplassen. Premie for fineste bil." },
+    { dato: "2025-02-10", tittel: "Heist Event", tekst: "Spesial-event for gjenger 💰." },
+];
+// ============================================================
+
+// Sorterer automatisk etter dato
+events.sort((a,b)=>new Date(a.dato)-new Date(b.dato));
+
+let div=document.getElementById("eventList");
+events.forEach(e=>{
+    div.innerHTML+=`
+    <div class="event">
+        <div class="date">${e.dato}</div>
+        <div class="title">${e.tittel}</div>
+        <div class="desc">${e.tekst}</div>
+    </div>`;
+});
+</script>
+</body>
+</html>
