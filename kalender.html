@@ -2,167 +2,178 @@
 <html lang="no">
 <head>
 <meta charset="UTF-8">
-<title>Kalender - Fjellstad Rollespill</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fjellstad Kalender</title>
 <style>
-body{
-    margin:0;background:#0a0e1a;color:white;font-family:Inter,sans-serif;
-}
-
-/* Header */
-header{
-    position:fixed;top:0;width:100%;background:#0a0e1acc;
-    padding:15px 0;border-bottom:1px solid #ffffff22;backdrop-filter:blur(10px);
-}
-nav{max-width:1000px;margin:auto;display:flex;justify-content:space-between;align-items:center;padding:0 15px;}
-nav ul{display:flex;gap:1.5rem;list-style:none;}nav a{color:#ddd;text-decoration:none;}nav a:hover{color:white;}
-
-.container{max-width:900px;margin:120px auto;text-align:center;}
-h1{font-size:2.8rem;margin-bottom:20px;background:linear-gradient(90deg,#7b45d0,#6e7dfb);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-
-.monthbar{display:flex;justify-content:center;align-items:center;gap:20px;margin-bottom:15px;font-size:1.6rem;font-weight:700;}
-.btn{
-    background:#ffffff17;border:1px solid #ffffff40;padding:6px 12px;
-    border-radius:6px;cursor:pointer;transition:.2s;
-}
-.btn:hover{background:white;color:black;}
-
-/* Kalender grid */
-.calendar{
-    display:grid;
-    grid-template-columns:repeat(7,1fr);
-    gap:6px;
-    margin-top:15px;
-}
-.day-name{padding:8px;font-weight:700;opacity:.85;text-align:center;}
-
-.day{
-    height:95px;padding:7px;border-radius:10px;background:#ffffff0e;border:1px solid #ffffff22;
-    text-align:left;position:relative;cursor:pointer;transition:.15s;display:flex;flex-direction:column;
-}
-.day:hover{background:#ffffff22;transform:scale(1.035);}
-.today{border:2px solid #81d5ff;}
-.empty{opacity:0;pointer-events:none;}
-
-.event-label{
-    font-size:0.70rem;
-    margin-top:auto;
-    background:#81d5ff22;
-    border:1px solid #81d5ff55;
-    padding:2px 3px;
-    border-radius:4px;
-    width:max-content;
-    max-width:100%;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-}
-
-/* popup */
-#modal{
-    display:none;position:fixed;inset:0;background:#0008;
-    justify-content:center;align-items:center;z-index:10;
-}
-.modal-box{
-    background:#111a2c;padding:22px;border-radius:12px;width:280px;text-align:center;
-}
-.modal-box button{margin-top:10px;}
+  body { font-family: Arial, sans-serif; background: #0a0e1a; color: #fff; margin:0; padding:0; }
+  header { background: #111; padding: 1rem; display:flex; justify-content: space-between; align-items:center; }
+  header h1 { margin:0; font-size:1.5rem; }
+  button { cursor:pointer; padding:0.5rem 1rem; border:none; border-radius:5px; background:#4facfe; color:white; font-weight:bold; }
+  .calendar { display:grid; grid-template-columns: repeat(7, 1fr); gap:1px; background:#222; margin:1rem; }
+  .day { background:#111; min-height:100px; padding:5px; display:flex; flex-direction:column; justify-content:flex-start; }
+  .day-number { font-weight:bold; margin-bottom:0.3rem; }
+  .event { background:#4facfe; padding:2px 4px; margin-bottom:2px; border-radius:3px; font-size:0.8rem; cursor:pointer; }
+  .event:hover { background:#67aaff; }
+  .weekdays { display:grid; grid-template-columns: repeat(7, 1fr); background:#222; text-align:center; }
+  .weekday { padding:5px 0; font-weight:bold; }
+  #modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; }
+  #modalContent { background:#111; padding:2rem; border-radius:10px; max-width:400px; width:90%; }
+  #comments { max-height:200px; overflow-y:auto; margin-top:1rem; border-top:1px solid #333; padding-top:0.5rem; }
+  .comment { margin-bottom:0.5rem; font-size:0.9rem; }
+  input, textarea { width:100%; margin-top:0.5rem; padding:5px; border-radius:5px; border:none; }
 </style>
 </head>
-
 <body>
 
 <header>
-<nav>
-    <div style="font-size:1.4rem;font-weight:800;">📅 Kalender</div>
-    <ul><li><a href="#">Hjem</a></li><li><a style="color:white;">Kalender</a></li></ul>
-</nav>
+  <h1>Fjellstad Kalender</h1>
+  <button id="discordLogin">Logg inn med Discord</button>
 </header>
 
-<div class="container">
-
-<h1>Event Kalender</h1>
-
-<div class="monthbar">
-    <div class="btn" onclick="prevMonth()">⬅</div>
-    <div id="monthYear"></div>
-    <div class="btn" onclick="nextMonth()">➡</div>
+<div class="weekdays">
+  <div class="weekday">Søn</div>
+  <div class="weekday">Man</div>
+  <div class="weekday">Tir</div>
+  <div class="weekday">Ons</div>
+  <div class="weekday">Tor</div>
+  <div class="weekday">Fre</div>
+  <div class="weekday">Lør</div>
 </div>
 
-<div class="calendar" id="calendar-grid">
-    <div class="day-name">Man</div>
-    <div class="day-name">Tir</div>
-    <div class="day-name">Ons</div>
-    <div class="day-name">Tor</div>
-    <div class="day-name">Fre</div>
-    <div class="day-name">Lør</div>
-    <div class="day-name">Søn</div>
-</div>
+<div class="calendar" id="calendar"></div>
 
-</div>
-
-<!-- popup -->
+<!-- Modal for arrangement -->
 <div id="modal">
-    <div class="modal-box">
-        <h2 id="eventTitle"></h2>
-        <p id="eventText"></p>
-        <button class="btn" onclick="closeModal()">Lukk</button>
-    </div>
+  <div id="modalContent">
+    <h3 id="modalDate"></h3>
+    <div id="eventList"></div>
+    <textarea id="commentInput" placeholder="Skriv kommentar..."></textarea>
+    <button id="addCommentBtn">Legg til kommentar</button>
+    <div id="comments"></div>
+    <button onclick="closeModal()">Lukk</button>
+  </div>
 </div>
 
 <script>
-// EVENT LISTE — legg inn så mange du vil
-let events=[
-    { dato:"2025-02-01", tittel:"Åpningsfest 🎉", tekst:"Offisiell åpning og lansering" },
-    { dato:"2025-02-10", tittel:"Heist Event 💰", tekst:"Gjenger konkurrerer om heist" },
-    { dato:"2025-02-15", tittel:"Biltreff 🚗", tekst:"Vis frem bilen din og vinn premie" },
-];
+// === Discord Login Setup ===
+const clientId = "DIN_CLIENT_ID"; // Sett din Client ID her
+const redirectUri = "https://fjellstadrollespill.netlify.app/callback.html";
+const scopes = "identify";
 
-let date=new Date();
+document.getElementById("discordLogin").onclick = () => {
+  const url = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=${scopes}`;
+  window.location.href = url;
+}
 
-function loadCalendar(){
-    const year=date.getFullYear();
-    const month=date.getMonth();
-    document.getElementById("monthYear").innerText=
-        date.toLocaleString("no-NO",{month:"long",year:"numeric"});
+async function getDiscordUser() {
+  const token = localStorage.getItem("discord_token");
+  if (!token) return null;
+  try {
+    const res = await fetch("https://discord.com/api/users/@me", {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (!res.ok) throw new Error("Token ugyldig");
+    const user = await res.json();
+    return user;
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}
 
-    const firstDay=(new Date(year,month,1).getDay()+6)%7;
-    const lastDay=new Date(year,month+1,0).getDate();
+// === Calendar Setup ===
+const calendarEl = document.getElementById("calendar");
+const events = {
+  "2025-12-25": [{ title: "Julefest" }],
+  "2025-12-31": [{ title: "Nyttårsaften" }]
+};
+const commentsStore = JSON.parse(localStorage.getItem("comments")||"{}");
 
-    const grid=document.getElementById("calendar-grid");
-    grid.innerHTML=`
-        <div class="day-name">Man</div><div class="day-name">Tir</div><div class="day-name">Ons</div>
-        <div class="day-name">Tor</div><div class="day-name">Fre</div><div class="day-name">Lør</div><div class="day-name">Søn</div>`;
+function renderCalendar() {
+  calendarEl.innerHTML = "";
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth();
+  const firstDay = new Date(year, month, 1);
+  const lastDay = new Date(year, month+1, 0);
+  const startDay = firstDay.getDay(); // 0=sun,6=sat
 
-    for(let i=0;i<firstDay;i++) grid.innerHTML+=`<div class="day empty"></div>`;
+  // Blank days
+  for(let i=0;i<startDay;i++){
+    const blank = document.createElement("div");
+    blank.className="day";
+    calendarEl.appendChild(blank);
+  }
 
-    for(let i=1;i<=lastDay;i++){
-        const d=`${year}-${String(month+1).padStart(2,"0")}-${String(i).padStart(2,"0")}`;
-        const e=events.find(x=>x.dato===d);
+  // Days
+  for(let d=1; d<=lastDay.getDate(); d++){
+    const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const dayEl = document.createElement("div");
+    dayEl.className="day";
+    const numberEl = document.createElement("div");
+    numberEl.className="day-number";
+    numberEl.textContent = d;
+    dayEl.appendChild(numberEl);
 
-        const today=new Date();
-        const mark=(i===today.getDate()&&month===today.getMonth()&&year===today.getFullYear())?"today":"";
-
-        grid.innerHTML+=`
-        <div class="day ${mark}" onclick="${e?`showEvent('${e.tittel}','${e.tekst}')`:""}">
-            <div style="font-weight:700;font-size:1rem">${i}</div>
-            ${e?`<div class='event-label'>${e.tittel}</div>`:""}
-        </div>`;
+    // Add events
+    if(events[dateStr]){
+      events[dateStr].forEach((ev,i)=>{
+        const evEl = document.createElement("div");
+        evEl.className="event";
+        evEl.textContent = ev.title;
+        evEl.onclick = () => openModal(dateStr, ev.title);
+        dayEl.appendChild(evEl);
+      });
     }
+
+    calendarEl.appendChild(dayEl);
+  }
 }
 
-function prevMonth(){date.setMonth(date.getMonth()-1);loadCalendar();}
-function nextMonth(){date.setMonth(date.getMonth()+1);loadCalendar();}
+// === Modal ===
+const modal = document.getElementById("modal");
+const modalDateEl = document.getElementById("modalDate");
+const eventListEl = document.getElementById("eventList");
+const commentsEl = document.getElementById("comments");
+let currentDate="";
+let currentEvent="";
 
-function showEvent(t,x){
-    document.getElementById("eventTitle").innerText=t;
-    document.getElementById("eventText").innerText=x;
-    document.getElementById("modal").style.display="flex";
+function openModal(date, eventTitle) {
+  currentDate = date;
+  currentEvent = eventTitle;
+  modal.style.display="flex";
+  modalDateEl.textContent = `${date} - ${eventTitle}`;
+  renderComments();
 }
-function closeModal(){document.getElementById("modal").style.display="none";}
 
-loadCalendar();
+function closeModal() { modal.style.display="none"; }
+
+function renderComments(){
+  commentsEl.innerHTML="";
+  const allComments = commentsStore[currentDate+"_"+currentEvent] || [];
+  allComments.forEach(c=>{
+    const div = document.createElement("div");
+    div.className="comment";
+    div.innerHTML=`<strong>${c.username}:</strong> ${c.text}`;
+    commentsEl.appendChild(div);
+  });
+}
+
+document.getElementById("addCommentBtn").onclick = async ()=>{
+  const user = await getDiscordUser();
+  if(!user) return alert("Du må logge inn med Discord først!");
+  const text = document.getElementById("commentInput").value;
+  if(!text) return;
+  const key = currentDate+"_"+currentEvent;
+  if(!commentsStore[key]) commentsStore[key]=[];
+  commentsStore[key].push({username:user.username,text});
+  localStorage.setItem("comments",JSON.stringify(commentsStore));
+  document.getElementById("commentInput").value="";
+  renderComments();
+}
+
+// === Initial render ===
+renderCalendar();
 </script>
 
 </body>
