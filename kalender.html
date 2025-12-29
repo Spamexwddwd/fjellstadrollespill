@@ -3,68 +3,232 @@
 <head>
 <meta charset="UTF-8">
 <title>Kalender - Fjellstad Rollespill</title>
-<link rel="icon" type="image/x-icon" href="logo.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="logo.png">
 
 <style>
-    body{font-family:Inter, sans-serif;background:#0a0e1a;color:white;margin:0;}
-    header{position:fixed;top:0;width:100%;background:rgba(10,14,26,.8);backdrop-filter:blur(20px);padding:1rem;border-bottom:1px solid rgba(255,255,255,.1);}
-    nav{max-width:1200px;margin:auto;display:flex;justify-content:space-between;align-items:center;}
-    ul{list-style:none;display:flex;gap:2rem;margin-right:2rem;}
-    a{text-decoration:none;color:#ccc;font-weight:500;} a:hover{color:white;}
+    body {
+        background: #0a0e1a;
+        color: white;
+        font-family: Inter, sans-serif;
+        margin: 0;
+    }
+    header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        padding: 1rem;
+        background: rgba(10,14,26,.85);
+        backdrop-filter: blur(15px);
+        border-bottom: 1px solid rgba(255,255,255,.1);
+    }
+    nav {
+        max-width: 1100px;
+        margin: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    ul {
+        list-style: none;
+        display: flex;
+        gap: 1.8rem;
+    }
+    a { text-decoration: none; color: #ddd; }
+    a:hover { color: white; }
 
-    .container{max-width:1000px;margin:120px auto;padding:20px;}
-    h1{text-align:center;font-size:3rem;margin-bottom:2rem;background:linear-gradient(90deg,#6e7dfb,#7b45d0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-    
-    .event{background:rgba(255,255,255,0.06);padding:20px;border-radius:12px;margin-bottom:15px;border:1px solid rgba(255,255,255,.1);transition:.2s;}
-    .event:hover{background:rgba(255,255,255,0.12);transform:translateY(-3px);}
-    .date{font-size:1.2rem;font-weight:700;color:#7bc9ff;}
-    .title{font-size:1.5rem;margin-top:5px;}
-    .desc{color:#ddd;margin-top:6px;}
+    .container {
+        max-width: 1000px;
+        margin: 120px auto;
+        padding: 20px;
+    }
+    h1 {
+        text-align: center;
+        font-size: 2.8rem;
+        margin-bottom: 25px;
+        background: linear-gradient(90deg,#6e7dfb,#7b45d0);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
 
-    .back{display:block;text-align:center;margin-top:40px;color:#7bc9ff;font-weight:700;font-size:1.2rem;}
+    .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        font-size: 1.6rem;
+    }
+    .btn {
+        cursor: pointer;
+        padding: 8px 14px;
+        border-radius: 8px;
+        background: rgba(255,255,255,.07);
+        border: 1px solid rgba(255,255,255,.15);
+        font-size: 1.2rem;
+        transition: .2s;
+    }
+    .btn:hover {
+        background: rgba(255,255,255,.18);
+    }
+
+    .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 5px;
+        background: rgba(255,255,255,.05);
+        padding: 15px;
+        border-radius: 12px;
+    }
+    .day-name {
+        text-align: center;
+        opacity: 0.8;
+        margin-bottom: 5px;
+        font-weight: 600;
+    }
+    .day {
+        height: 95px;
+        padding: 7px;
+        border-radius: 10px;
+        background: rgba(255,255,255,.07);
+        border: 1px solid rgba(255,255,255,.1);
+        transition: .2s;
+        position: relative;
+        cursor: pointer;
+    }
+    .day:hover {
+        background: rgba(255,255,255,.15);
+        transform: scale(1.05);
+    }
+    .today {
+        border: 2px solid #7bc9ff;
+    }
+    .event-dot {
+        width: 10px;
+        height: 10px;
+        background: #7bc9ff;
+        border-radius: 50%;
+        position: absolute;
+        bottom: 6px;
+        right: 6px;
+    }
+
+    /* Popup */
+    #modal {
+        display: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,.7);
+        align-items: center;
+        justify-content: center;
+    }
+    .modal-box {
+        background: #101525;
+        padding: 20px;
+        width: 300px;
+        border-radius: 12px;
+        text-align: center;
+    }
 </style>
 </head>
 
 <body>
 <header>
     <nav>
-        <div style="font-weight:800;font-size:1.3rem;">📅 Fjellstad Kalender</div>
+        <div style="font-weight:800;">📅 Fjellstad Kalender</div>
         <ul>
             <li><a href="index.html">Hjem</a></li>
-            <li><a href="kalender.html" style="color:white;">Kalender</a></li>
+            <li><a style="color:white;">Kalender</a></li>
         </ul>
     </nav>
 </header>
 
 <div class="container">
     <h1>Arrangement Kalender</h1>
-    <div id="eventList"></div>
 
-    <a href="index.html" class="back">← Tilbake til forsiden</a>
+    <div class="calendar-header">
+        <div class="btn" onclick="prevMonth()">⬅</div>
+        <div id="monthYear"></div>
+        <div class="btn" onclick="nextMonth()">➡</div>
+    </div>
+
+    <div class="calendar-grid">
+        <div class="day-name">Man</div>
+        <div class="day-name">Tir</div>
+        <div class="day-name">Ons</div>
+        <div class="day-name">Tor</div>
+        <div class="day-name">Fre</div>
+        <div class="day-name">Lør</div>
+        <div class="day-name">Søn</div>
+        <div id="days"></div>
+    </div>
+</div>
+
+<!-- EVENT POPUP -->
+<div id="modal">
+    <div class="modal-box">
+        <h2 id="eventTitle"></h2>
+        <p id="eventDesc"></p>
+        <button onclick="closeModal()" class="btn" style="margin-top:10px;">Lukk</button>
+    </div>
 </div>
 
 <script>
-// ============ 🔥 Her legger du inn eventene dine ============
 let events = [
-    { dato: "2025-02-01", tittel: "Åpningsfest", tekst: "Serveren åpner offisielt! 🎉" },
-    { dato: "2025-02-05", tittel: "Biltreff", tekst: "Samling på flyplassen. Premie for fineste bil." },
-    { dato: "2025-02-10", tittel: "Heist Event", tekst: "Spesial-event for gjenger 💰." },
+    { dato:"2025-02-01", tittel:"Åpningsfest 🎉", tekst:"Serveren åpner!" },
+    { dato:"2025-02-10", tittel:"Heist Event 💰", tekst:"Spesialevent for gjenger" },
+    { dato:"2025-02-15", tittel:"Biltreff 🚗", tekst:"Premie for fineste bil" },
 ];
-// ============================================================
 
-// Sorterer automatisk etter dato
-events.sort((a,b)=>new Date(a.dato)-new Date(b.dato));
+let date = new Date();
 
-let div=document.getElementById("eventList");
-events.forEach(e=>{
-    div.innerHTML+=`
-    <div class="event">
-        <div class="date">${e.dato}</div>
-        <div class="title">${e.tittel}</div>
-        <div class="desc">${e.tekst}</div>
-    </div>`;
-});
+function renderCalendar() {
+    let year = date.getFullYear();
+    let month = date.getMonth();
+
+    let firstDay = new Date(year, month, 1).getDay() || 7;
+    let lastDay = new Date(year, month + 1, 0).getDate();
+    
+    document.getElementById("monthYear").innerText =
+        date.toLocaleString("no-NO", { month: "long", year: "numeric" });
+
+    let daysHTML = "";
+    for (let i = 1; i < firstDay; i++) {
+        daysHTML += `<div class="day" style="opacity:0;"></div>`;
+    }
+
+    for (let i = 1; i <= lastDay; i++) {
+        let current = `${year}-${String(month+1).padStart(2,"0")}-${String(i).padStart(2,"0")}`;
+        let hasEvent = events.find(e => e.dato === current);
+        let today = new Date();
+        let classToday = 
+            (i === today.getDate() && month === today.getMonth() && year === today.getFullYear())
+            ? "today" : "";
+
+        daysHTML += `
+        <div class="day ${classToday}" onclick="showEvent('${current}')">
+            ${i}
+            ${hasEvent ? '<div class="event-dot"></div>' : ''}
+        </div>`;
+    }
+
+    document.getElementById("days").innerHTML = daysHTML;
+}
+
+function showEvent(dateStr){
+    let e = events.find(ev => ev.dato === dateStr);
+    if(!e) return;
+    document.getElementById("eventTitle").innerText = e.tittel;
+    document.getElementById("eventDesc").innerText = e.tekst;
+    document.getElementById("modal").style.display = "flex";
+}
+function closeModal(){ document.getElementById("modal").style.display="none"; }
+
+function prevMonth(){ date.setMonth(date.getMonth()-1); renderCalendar(); }
+function nextMonth(){ date.setMonth(date.getMonth()+1); renderCalendar(); }
+
+renderCalendar();
 </script>
+
 </body>
 </html>
