@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <title>Discord Login Callback</title>
+</head>
+<body>
+  <h2>Logger inn...</h2>
+  <script>
+    // Hent hash fra URL
+    const hash = window.location.hash.substring(1);
+    const params = new URLSearchParams(hash);
+    const access_token = params.get('access_token');
+
+    if (access_token) {
+      localStorage.setItem('discord_token', access_token);
+      window.location.href = '/kalender.html'; // send videre til kalender
+    } else {
+      alert('Feil under Discord login');
+    }
+  </script>
+</body>
+</html>
