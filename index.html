@@ -515,61 +515,60 @@ Fjellstad Rollespill
             updatePlayerCountDisplay();
             setInterval(updatePlayerCount, 15000);
         });
+        /* Discord Login (frontend) */
+        const discordArea=document.getElementById('discordArea');
+        function checkDiscordLogin(){
+        const user=JSON.parse(localStorage.getItem('discordUser'));
+        discordArea.innerHTML='';
+        if(user){
+        const div=document.createElement('div');
+        div.id='discordProfile';
+        div.innerHTML=`<img src="${user.avatar}" alt="Avatar" /><span>${user.username}</span>`;
+        div.onclick=()=>{document.getElementById('discordDropdown').style.display='block';};
+        discordArea.appendChild(div);
+        }else{
+        const btn=document.createElement('button');
+        btn.id='discordLoginBtn';
+        btn.innerText='Logg inn med Discord';
+        btn.onclick=discordLogin;
+        discordArea.appendChild(btn);
+        }
+        }
+        function discordLogin(){
+        // Enkel OAuth2 popup (kun frontend)
+        const clientId='DIN_DISCORD_CLIENT_ID';
+        const redirectUri=window.location.origin+'/'; // redirect tilbake til samme side
+        const scope='identify';
+        const url=`https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=${scope}`;
+        const popup=window.open(url,'DiscordLogin','width=500,height=600');
+        const pollTimer=setInterval(()=>{try{
+        if(popup.closed){clearInterval(pollTimer);checkDiscordLogin();}
+        }catch(e){}},1000);
+        }
+        function discordLogout(){localStorage.removeItem('discordUser');document.getElementById('discordDropdown').style.display='none';checkDiscordLogin();}
+        checkDiscordLogin();
+
+        /* Floating Elements */
+        const floatingEl=document.getElementById('floatingElements');
+        for(let i=0;i<50;i++){
+        const el=document.createElement('div');
+        el.classList.add('floating-element');
+        el.style.left=Math.random()*100+'vw';
+        el.style.animationDuration=(5+Math.random()*10)+'s';
+        floatingEl.appendChild(el);
+        }
+
+        /* Loading Screen */
+        document.addEventListener('DOMContentLoaded',()=>{
+        const loadingScreen=document.createElement('div');
+        loadingScreen.classList.add('loading-screen');
+        loadingScreen.innerHTML=`<div class="loading-logo"><img src="logo.png" class="loading-logo-img" /></div><div class="loading-bar"><div class="loading-progress" id="loadingProgress"></div></div><div class="fjordhost-loading">Laster... <a href="https://fjordhost.com/">Fjordhost</a></div>`;
+        document.body.appendChild(loadingScreen);
+        let progress=0;
+        const interval=setInterval(()=>{progress+=1;document.getElementById('loadingProgress').style.width=progress+'%';if(progress>=100){clearInterval(interval);loadingScreen.style.opacity='0';setTimeout(()=>loadingScreen.remove(),500);}},30);
+        });
+        </script>
+        </body>
+        </html>
     </script>
 <center>
-
-/* Discord Login (frontend) */
-const discordArea=document.getElementById('discordArea');
-function checkDiscordLogin(){
-const user=JSON.parse(localStorage.getItem('discordUser'));
-discordArea.innerHTML='';
-if(user){
-const div=document.createElement('div');
-div.id='discordProfile';
-div.innerHTML=`<img src="${user.avatar}" alt="Avatar" /><span>${user.username}</span>`;
-div.onclick=()=>{document.getElementById('discordDropdown').style.display='block';};
-discordArea.appendChild(div);
-}else{
-const btn=document.createElement('button');
-btn.id='discordLoginBtn';
-btn.innerText='Logg inn med Discord';
-btn.onclick=discordLogin;
-discordArea.appendChild(btn);
-}
-}
-function discordLogin(){
-// Enkel OAuth2 popup (kun frontend)
-const clientId='DIN_DISCORD_CLIENT_ID';
-const redirectUri=window.location.origin+'/'; // redirect tilbake til samme side
-const scope='identify';
-const url=`https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=${scope}`;
-const popup=window.open(url,'DiscordLogin','width=500,height=600');
-const pollTimer=setInterval(()=>{try{
-if(popup.closed){clearInterval(pollTimer);checkDiscordLogin();}
-}catch(e){}},1000);
-}
-function discordLogout(){localStorage.removeItem('discordUser');document.getElementById('discordDropdown').style.display='none';checkDiscordLogin();}
-checkDiscordLogin();
-
-/* Floating Elements */
-const floatingEl=document.getElementById('floatingElements');
-for(let i=0;i<50;i++){
-const el=document.createElement('div');
-el.classList.add('floating-element');
-el.style.left=Math.random()*100+'vw';
-el.style.animationDuration=(5+Math.random()*10)+'s';
-floatingEl.appendChild(el);
-}
-
-/* Loading Screen */
-document.addEventListener('DOMContentLoaded',()=>{
-const loadingScreen=document.createElement('div');
-loadingScreen.classList.add('loading-screen');
-loadingScreen.innerHTML=`<div class="loading-logo"><img src="logo.png" class="loading-logo-img" /></div><div class="loading-bar"><div class="loading-progress" id="loadingProgress"></div></div><div class="fjordhost-loading">Laster... <a href="https://fjordhost.com/">Fjordhost</a></div>`;
-document.body.appendChild(loadingScreen);
-let progress=0;
-const interval=setInterval(()=>{progress+=1;document.getElementById('loadingProgress').style.width=progress+'%';if(progress>=100){clearInterval(interval);loadingScreen.style.opacity='0';setTimeout(()=>loadingScreen.remove(),500);}},30);
-});
-</script>
-</body>
-</html>
